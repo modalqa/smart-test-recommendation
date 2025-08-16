@@ -1,34 +1,90 @@
-# smart-test-recommendation
+# Smart Test Recommendation
 
-An AI-based tool that reads code changes from Git and provides test case recommendations automatically
+An AI-powered tool that analyzes Git code changes and automatically generates test case recommendations for JavaScript/Node.js applications.
 
-## Cara Pakai
+## Installation
 
 ```bash
-npm install
+npm install smart-test-recommender
+```
+
+## Configuration
+
+Create a `.env` file in your project root with:
+
+```env
+OPENROUTER_API_KEY=your_api_key_here
+OPENROUTER_API_URL=https://openrouter.ai/api/v1/chat/completions
+```
+
+## Usage
+
+After making changes to your code and committing them to Git, run:
+
+```bash
 npx smart-recommender
 ```
 
-## Konfigurasi
-Tambahkan file `.env` berisi:
+### Example Output
 
+When you run the tool, it will analyze your changes and provide test case recommendations like this:
+
+```javascript
+💡 Test Case Recommendation:
+
+test('extractChangedFunctions filters out non-function lines', () => {
+  const diff = `
+    +function test1() {}
+    +const x = 10;
+    +function test2(param) { return param * 2; }
+    +{ some: 'object' }
+    +function test3() { let x = 5; }
+  `;
+
+  const expected = [
+    '+function test1() {}',
+    '+function test2(param) { return param * 2; }',
+    '+function test3() { let x = 5; }'
+  ];
+
+  const result = extractChangedFunctions(diff.split('\n'));
+  expect(result).toEqual(expected);
+});
 ```
-OPENROUTER_API_KEY=your_api_key_here
-OPENROUTER_API_URL=your_api_url_here
-```
 
-## Fitur
-- Menganalisa perubahan kode dari Git diff
-- Mengidentifikasi fungsi yang berubah
-- Memberikan rekomendasi test case menggunakan AI
-- Mendukung JavaScript/Node.js
+## Features
 
-## Output
-Tool akan menampilkan:
-- Rekomendasi test case berdasarkan perubahan kode
-- Pesan error jika terjadi masalah
+- Analyzes code changes using Git diff
+- Identifies modified functions automatically
+- Generates relevant test case recommendations using AI
+- Supports JavaScript/Node.js applications
+- Provides detailed test examples with assertions
+- Handles various function declaration patterns
+
+## Output Format
+
+The tool provides:
+- Test case recommendations with example code
+- Error messages if any issues occur
 
 ## Requirements
-- Node.js
+
+- Node.js installed
 - Git repository
-- OpenRouter API key dan URL
+- OpenRouter API key (sign up at openrouter.ai)
+
+## Error Handling
+
+If you encounter errors, check:
+1. Your `.env` file configuration
+2. Network connectivity to OpenRouter API
+3. Git repository status
+
+## Supported Test Patterns
+
+The tool can recommend tests for:
+- Function declarations
+- Method implementations
+- Edge cases and input validation
+- Return value verification
+- Error handling scenarios
